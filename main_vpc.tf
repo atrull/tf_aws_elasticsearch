@@ -1,4 +1,4 @@
-/*Add a new set of data.aws_iam_policy_document, aws_elasticsearch_domain, aws_elasticsearch_domain_policy. Because currently terraform/aws_elasticsearch_domain 
+/*Add a new set of data.aws_iam_policy_document, aws_elasticsearch_domain, aws_elasticsearch_domain_policy. Because currently terraform/aws_elasticsearch_domain
 does not handle properly null/empty "vpc_options" */
 
 data "aws_iam_policy_document" "es_vpc_management_access" {
@@ -22,14 +22,8 @@ data "aws_iam_policy_document" "es_vpc_management_access" {
   }
 }
 
-resource "aws_iam_service_linked_role" "es" {
-  aws_service_name = "es.amazonaws.com"
-}
-
 resource "aws_elasticsearch_domain" "es_vpc" {
   count = "${local.inside_vpc ? 1 : 0}"
-
-  depends_on = ["aws_iam_service_linked_role.es"]
 
   domain_name           = "${local.domain_name}"
   elasticsearch_version = "${var.es_version}"

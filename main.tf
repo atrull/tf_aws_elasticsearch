@@ -29,8 +29,6 @@ data "aws_iam_policy_document" "es_management_access" {
 resource "aws_elasticsearch_domain" "es" {
   count = "${!local.inside_vpc ? 1 : 0}"
 
-  depends_on = ["aws_iam_service_linked_role.es"]
-
   domain_name           = "${local.domain_name}"
   elasticsearch_version = "${var.es_version}"
 
